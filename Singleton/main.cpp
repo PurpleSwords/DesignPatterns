@@ -5,20 +5,20 @@
 class LazySingleton
 {
 private:
-    static LazySingleton *instance;
+    //static LazySingleton *instance;
     LazySingleton() {}
 
+    LazySingleton(const LazySingleton&) = delete;
+    LazySingleton& operator=(const LazySingleton&) = delete;
+
 public:
-    static LazySingleton *getInstance()
+    static LazySingleton* getInstance()
     {
-        if (instance == nullptr)
-        {
-            instance = new LazySingleton();
-        }
-        return instance;
+        static LazySingleton instance;
+        return &instance;
     }
 };
-LazySingleton *LazySingleton::instance = nullptr;
+//LazySingleton *LazySingleton::instance = nullptr;
 
 int main()
 {
@@ -30,7 +30,7 @@ int main()
         {
             // 令当前线程睡眠
             std::this_thread::sleep_for(std::chrono::seconds(1));
-            LazySingleton *instance = LazySingleton::getInstance();
+            LazySingleton* instance = LazySingleton::getInstance();
             std::cout << instance << std::endl;
         }));
     }
